@@ -1,51 +1,56 @@
 # Політика версіонування
 
-## Семантичне версіонування (SemVer) — MAJOR.MINOR.PATCH
+## Версії (SemVer)
+Версія має вигляд **MAJOR.MINOR.PATCH**, наприклад `1.0.1`.
+
 | Частина | Коли змінюється | Приклад |
 |---------|-----------------|---------|
-| MAJOR | зламна зміна, несумісність API | 1.1.1 → 2.0.0 |
-| MINOR | нова функціональність, сумісна зі старою | 1.0.0 → 1.1.0 |
-| PATCH | виправлення помилок без зміни API | 1.1.0 → 1.1.1 |
+| MAJOR | зміна, яка ламає сумісність зі старою версією | 1.1.1 → 2.0.0 |
+| MINOR | нова функція, стара працює як раніше | 1.0.0 → 1.1.0 |
+| PATCH | виправлення помилки | 1.1.0 → 1.1.1 |
 
-Прапорці пре-релізів: `1.1.0-rc.1`. Теги мають формат `vMAJOR.MINOR.PATCH`.
+Теги у Git пишемо з літерою `v`: `v1.0.0`.
 
-## Git-стратегія: GitFlow (спрощений)
-- `main` — лише стабільні релізи, кожен коміт має тег.
-- `develop` — інтеграція готових фіч.
-- `feature/*` — одна гілка на фічу, створюється від `develop`.
-- `release/*` — підготовка релізу (за потреби; у команді 1–2 осіб можна пропустити).
-- `hotfix/*` — термінові виправлення від `main`, зливаються в `main` і `develop`.
+## Гілки (GitFlow)
+- `main` — тільки стабільні релізи, на кожному релізі стоїть тег.
+- `develop` — сюди зливаються готові фічі.
+- `feature/*` — окрема гілка на кожну нову функцію, створюється від `develop`.
+- `release/*` — підготовка релізу.
+- `hotfix/*` — швидке виправлення помилки у `main`.
 
-```
-main     ●─────────────────────●── v1.0.0 ──────────● v1.0.1
-          \                   /                     ^
-develop    ●───●─────────●───●──────────────────────/ (hotfix)
-                \       /
-feature/*        ●───●─┘
-```
+## Повідомлення комітів
+Пишемо за схемою `тип(область): опис`:
+- `feat` — нова функція (змінює MINOR);
+- `fix` — виправлення помилки (змінює PATCH);
+- `docs`, `test`, `chore` — документація, тести, дрібні зміни.
 
-## Формат комітів (Conventional Commits)
-`feat(scope): ...` → MINOR; `fix(scope): ...` → PATCH; `feat!:` або `BREAKING CHANGE:` → MAJOR; також `docs`, `test`, `chore`, `ci`.
+Приклад: `feat(auth): add login endpoint`.
 
-## Приклад команд
+## Команди Git
+Нова фіча:
 ```bash
 git checkout -b feature/add-login develop
 git add .
 git commit -m "feat(auth): add login endpoint"
 git push origin feature/add-login
-# після code review
+```
+Після перевірки коду зливаємо у `develop`:
+```bash
 git checkout develop
 git merge --no-ff feature/add-login
 git push origin develop
-# реліз
+```
+Реліз:
+```bash
 git checkout main
 git merge --no-ff develop
 git tag -a v1.0.0 -m "Release 1.0.0"
-git push origin main v1.0.0
+git push origin main
+git push origin v1.0.0
 ```
 
 ## Правила релізу
-1. Усі фічі злиті в `develop`, тести проходять.
-2. Оновлено `CHANGELOG.md` і release notes (за `RELEASE_TEMPLATE.md`).
-3. `develop` зливається в `main` з `--no-ff`, ставиться тег.
-4. Історія релізів ведеться у `CHANGELOG.md` та в тегах Git.
+1. Усі фічі злиті у `develop`, тести проходять.
+2. Оновлено `CHANGELOG.md` і release notes.
+3. `develop` зливається у `main`, ставиться тег.
+4. Історія релізів зберігається у `CHANGELOG.md` і в тегах Git.
