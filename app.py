@@ -1,7 +1,7 @@
 """Task Tracker API (демонстраційний застосунок для лабораторної)."""
 from flask import Flask, jsonify, request, abort
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 app = Flask(__name__)
 TASKS = {}
@@ -42,7 +42,7 @@ def update_task(task_id):
     task = TASKS.get(task_id) or abort(404)
     data = request.get_json(silent=True) or {}
     if "title" in data:
-        task["title"] = data["title"]
+        task["title"] = str(data["title"]).strip()
     if "done" in data:
         task["done"] = bool(data["done"])
     return jsonify(task)

@@ -3,6 +3,10 @@
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-11
+### Fixed
+- Title is trimmed on task update.
+
 ## [1.0.0] - 2026-10-11
 ### Added
 - `GET /health` endpoint.
