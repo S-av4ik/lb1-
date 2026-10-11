@@ -4,4 +4,5 @@
 ## [Unreleased]
 ### Added
 - `GET /health` endpoint.
+- CRUD endpoints for tasks (`/tasks`).
 
