@@ -1,4 +1,3 @@
-"""Task Tracker API (демонстраційний застосунок для лабораторної)."""
 from flask import Flask, jsonify, request, abort
 
 __version__ = "1.0.1"
