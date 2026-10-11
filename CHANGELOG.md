@@ -3,3 +3,8 @@
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-11
+### Added
+- `GET /health` endpoint.
+- CRUD endpoints for tasks (`/tasks`).
+
